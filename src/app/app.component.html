@@ -1,0 +1,98 @@
+<!-- ngModel -just to tell angular that data input is a control
+  [ngModel] - which is one way binding - to give that control a default value
+  [(ngModel)] - 2way binding - to instantly output it (or do what you want with that value)
+-->
+
+
+<app-test></app-test>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form ngNativeValidate (ngSubmit)="onSubmit()" #formElement="ngForm" >
+        <div 
+          id="user-data" 
+          ngModelGroup="userData"
+          #userData="ngModelGroup">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+              type="text" 
+              id="username" 
+              class="form-control"
+              ngModel
+              name="username"
+              required
+              >
+          </div>
+          <button 
+            class="btn btn-default" 
+            type="button"
+            (click)="suggestUserName()">
+            Suggest an Username
+          </button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input 
+              type="email" 
+              id="email" 
+              class="form-control"
+              ngModel
+              name="email"
+              email
+              #emailV="ngModel">
+            <span *ngIf="emailV.touched && !emailV.valid" class="help-block">Please enter a valid value!</span>
+          </div>
+        </div>
+        <p *ngIf="!userData.valid && userData.touched">User data is invalid</p>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <select 
+            id="secret" 
+            class="form-control"
+            [ngModel]="defaultQuestions"
+            name="secret"
+            >
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            name="questionAnswer" 
+            rows="3"
+            [(ngModel)]="answer">
+          </textarea>
+        </div>
+        <p>Your reply {{ answer }}</p>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input 
+              type="radio"
+              name="gender"
+              ngModel
+              [value]="gender"
+              required>
+              {{gender}}
+          </label>
+        </div>
+        <button 
+          class="btn btn-primary" 
+          type="submit"
+          [disabled]="!formElement.valid">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-xs-12" *ngIf="submitted">
+    <h3>Your Data</h3>
+    <p>Username: {{ user.username }}</p>
+    <p>Mail: {{ user.email }} </p>
+    <p>Answer: {{ user.answer }} </p>
+    <p>Gender: {{ user.gender }} </p>
+  </div>
+</div>
